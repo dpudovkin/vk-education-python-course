@@ -2,7 +2,6 @@
 
 
 class TicTacGame:
-
     """The TicTacGame object contains game logic"""
 
     def __init__(self, player_a, player_b):
@@ -21,12 +20,13 @@ class TicTacGame:
 
         if self.board[x_index][y_index] != self.empty_sign:
             print("This cell is occupied")
-            return
+            return None
         if x_index not in range(self.dim) or y_index not in range(self.dim):
             print("Incorrect cell index")
-            return
-
+            return None
+        
         self.board[x_index][y_index] = self.signs.get(player, self.empty_sign)
+        return 0
 
     def start(self, msg=True):
 

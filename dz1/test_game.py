@@ -5,7 +5,6 @@ import game
 
 
 class TestGame(unittest.TestCase):
-
     """Test game class"""
 
     def setUp(self):
@@ -14,7 +13,6 @@ class TestGame(unittest.TestCase):
         self.tic_tac = game.TicTacGame(self.player_a, self.player_b)
 
     def test_win(self):
-
         """Test win method"""
 
         self.tic_tac.start(msg=False)
@@ -24,7 +22,6 @@ class TestGame(unittest.TestCase):
         self.assertEqual(self.tic_tac.get_winner(), self.player_a)
 
     def test_draw(self):
-
         """Test draw method"""
 
         self.tic_tac.start(msg=False)
@@ -42,7 +39,6 @@ class TestGame(unittest.TestCase):
         self.assertEqual(self.tic_tac.get_winner(), f"{self.player_a} and {self.player_b}")
 
     def test_none_win(self):
-
         """Test draw method"""
 
         self.tic_tac.start(msg=False)
