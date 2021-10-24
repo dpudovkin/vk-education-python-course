@@ -24,7 +24,7 @@ class TestCustomMetaClass(unittest.TestCase):
         CustomClass = CustomMeta("TestCustomClass", (object,), {self.attr_name: attr_value})
         instance = CustomClass()
         instance.attr = attr_value
-        assert instance.__dict__[f"custom_attr"] == attr_value
+        assert instance.__dict__["custom_attr"] == attr_value
 
     def test_class_method(self):
         """" test class method function """
