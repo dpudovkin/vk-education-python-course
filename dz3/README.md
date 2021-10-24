@@ -1,9 +1,9 @@
-##Запуск NGINX
+## Запуск NGINX
 ```bash
 sudo nginx  -c  ~/vk/education/dz3/nginx/nginx.conf
 ```
 
-##Запуск Gunicorn
+## Запуск Gunicorn
 ```bash
 gunicorn myapp:app
 ```
