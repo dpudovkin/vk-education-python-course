@@ -1,20 +1,18 @@
-import json
-
 from django.http import JsonResponse
 
 
 def order_list(request):
     if request.method == 'GET':
         # get data from databases
-        order_list = (
+        orderlist = (
             {'OrderID': '12', 'Total payment': 2100, 'isPaid': True, 'UserId': 1},
             {'OrderID': '13', 'Total payment': 2600, 'isPaid': True, 'UserId': 2},
             {'OrderID': '14', 'Total payment': 3500, 'isPaid': False, 'UserId': 2}
         )
-        return JsonResponse(order_list, safe=False)
-    else:
-        return JsonResponse({'success': False, 'error': f"Method {request.method} is not allowed"},
-                            content_type="application/json", status=405)
+        return JsonResponse(orderlist, safe=False)
+
+    return JsonResponse({'success': False, 'error': f"Method {request.method} is not allowed"},
+                        content_type="application/json", status=405)
 
 
 def order_info(request, order_id):
@@ -22,9 +20,9 @@ def order_info(request, order_id):
         # get data from databases by order id
         order = {'OrderID': order_id, 'Total payment': 2100, 'isPaid': True, 'UserId': 1}
         return JsonResponse(order, safe=False)
-    else:
-        return JsonResponse({'success': False, 'error': f"Method {request.method} is not allowed"},
-                            content_type="application/json", status=405)
+
+    return JsonResponse({'success': False, 'error': f"Method {request.method} is not allowed"},
+                        content_type="application/json", status=405)
 
 
 def create_order(request):
@@ -35,6 +33,6 @@ def create_order(request):
                          'UserId': request.POST.get('user_id')}
         # insert into database
         return JsonResponse(created_order, safe=False)
-    else:
-        return JsonResponse({'success': False, 'error': f"Method {request.method} is not allowed"},
-                            content_type="application/json", status=405)
+
+    return JsonResponse({'success': False, 'error': f"Method {request.method} is not allowed"},
+                        content_type="application/json", status=405)

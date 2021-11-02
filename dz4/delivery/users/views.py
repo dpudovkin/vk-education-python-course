@@ -1,20 +1,18 @@
-import json
-
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 
 
 def user_list(request):
     if request.method == 'GET':
         # get data from databases
-        user_list = (
+        userlist = (
             {'Name': 'Nina', 'Age': '18', 'Date of birth': '04.11.2001', 'ID': 1},
             {'Name': 'Dima', 'Age': '19', 'Date of birth': '04.11.2001', 'ID': 2},
             {'Name': 'Sergey', 'Age': '20', 'Date of birth': '04.11.2001', 'ID': 3}
         )
-        return JsonResponse(user_list, safe=False)
-    else:
-        return JsonResponse({'success': False, 'error': f"Method {request.method} is not allowed"},
-                            content_type="application/json", status=405)
+        return JsonResponse(userlist, safe=False)
+
+    return JsonResponse({'success': False, 'error': f"Method {request.method} is not allowed"},
+                        content_type="application/json", status=405)
 
 
 def user_info(request, user_id):
@@ -22,9 +20,9 @@ def user_info(request, user_id):
         # get data from database by user_id
         user = {'Name': 'Sergey', 'Age': '20', 'Date of birth': '04.11.2001', 'ID': user_id}
         return JsonResponse(user, safe=False)
-    else:
-        return JsonResponse({'success': False, 'error': f"Method {request.method} is not allowed"},
-                            content_type="application/json", status=405)
+
+    return JsonResponse({'success': False, 'error': f"Method {request.method} is not allowed"},
+                        content_type="application/json", status=405)
 
 
 def create_user(request):
@@ -37,6 +35,6 @@ def create_user(request):
                         'ID': request.POST.get('id')}
 
         return JsonResponse(created_user, safe=False)
-    else:
-        return JsonResponse({'success': False, 'error': f"Method {request.method} is not allowed"},
-                            content_type="application/json", status=405)
+
+    return JsonResponse({'success': False, 'error': f"Method {request.method} is not allowed"},
+                        content_type="application/json", status=405)
