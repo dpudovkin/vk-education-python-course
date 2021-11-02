@@ -1,4 +1,3 @@
-from django.contrib import admin
 from django.urls import path, include
 from orders.views import order_list, order_info, create_order
 
