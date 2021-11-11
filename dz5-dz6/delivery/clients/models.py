@@ -11,5 +11,5 @@ class Client(models.Model):
     user_id = models.OneToOneField(to=User, null=False, verbose_name='Пользователь',
                                    on_delete=models.PROTECT)
 
-
-
+    def __str__(self):
+        return f"{self.user_id.full_name} {self.status}"
