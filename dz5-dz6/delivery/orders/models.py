@@ -1,10 +1,14 @@
 from django.db import models
 
 
-from addresses.models import Address
 from clients.models import Client
 from employees.models import Employee
 
+
+class Address(models.Model):
+    full_name = models.CharField(max_length=255, verbose_name='Наименование адреса')
+    longitude = models.FloatField(null=False, verbose_name='Долгота')
+    latitude = models.FloatField(null=False, verbose_name='Ширина')
 
 class Order(models.Model):
     destination_client_id = models.ForeignKey(to=Client, null=False, on_delete=models.PROTECT,
@@ -25,5 +29,3 @@ class Order(models.Model):
     base_award = models.IntegerField(verbose_name='Базовое вознаграждение курьеру за выполненный заказ', default=0)
     performer_id = models.ForeignKey(to=Employee, null=False, on_delete=models.PROTECT,
                                      verbose_name='Курьер')
-
-
