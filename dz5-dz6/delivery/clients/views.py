@@ -5,6 +5,8 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from clients.models import Client
+from orders.models import Address
+from users.models import User
 
 
 @require_http_methods(['GET'])
@@ -19,8 +21,8 @@ def clients_list(request):
 def new_client(request):
     obj = Client.objects.create(
         status=request.POST.get('status'),
-        home_address=request.POST.get('home_address'),
-        user_id=request.POST.get('user_id')
+        home_address=Address.objects.get(id=request.POST.get('home_address')),
+        user_id=User.objects.get(id=request.POST.get('user_id'))
     )
     return JsonResponse({'success': True, 'client_id': obj.id}, status=200)
 
@@ -43,9 +45,9 @@ def clients(request, client_id):
 
             req = json.loads(request.body)
             Client.objects.filter(id=client_id).update(
-                status=request.POST.get('status'),
-                home_address=request.POST.get('home_address'),
-                user_id=request.POST.get('user_id')
+                status=req.get('status'),
+                home_address=Address.objects.get(id=req.get('home_address')),
+                user_id=User.objects.get(id=req.get('user_id'))
             )
             return JsonResponse({'success': True, 'client_id': client_id}, status=200)
         elif request.method == 'DELETE':

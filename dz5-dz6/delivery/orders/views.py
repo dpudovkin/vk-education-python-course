@@ -5,6 +5,8 @@ from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 
+from clients.models import Client
+from employees.models import Employee
 from orders.models import Order, Address
 
 
@@ -19,17 +21,21 @@ def order_list(request):
 @require_http_methods(['POST'])
 def new_order(request):
     created_order = Order.objects.create(
-        performer_id=request.POST.get('performer_id'),
+        performer_id=Employee.objects.get(id=request.POST.get('performer_id')),
         base_award=request.POST.get('base_award'),
         status=request.POST.get('status'),
         comment=request.POST.get('comment'),
         cost=request.POST.get('cost'),
-        arriving_address_id=request.POST.get('arriving_address_id'),
-        destination_address_id=request.POST.get('destination_address_id'),
-        arriving_client_id=request.POST.get('arriving_client_id'),
-        destination_client_id=request.POST.get('destination_client_id')
+        arriving_address_id=Address.objects.get(id=request.POST.get('arriving_address_id')),
+        destination_address_id=Address.objects.get(id=request.POST.get('destination_address_id')),
+        arriving_client_id=Client.objects.get(id=request.POST.get('arriving_client_id')),
+        destination_client_id=Client.objects.get(id=request.POST.get('destination_client_id'))
     )
     return JsonResponse({'success': True, 'order_id': created_order.id}, status=200)
+
+
+class Employeereq:
+    pass
 
 
 @require_http_methods(['PUT', 'DELETE', 'GET'])
@@ -41,7 +47,7 @@ def orders(request, order_id):
                             content_type="application/json", status=404)
     else:
         if request.method == 'GET':
-            return JsonResponse(order, safe=False)
+            return JsonResponse(model_to_dict(order), safe=False)
         elif request.method == 'PUT':
             if request.content_type != 'application/json':
                 return JsonResponse({'success': False,
@@ -50,20 +56,21 @@ def orders(request, order_id):
 
             req = json.loads(request.body)
 
-            Order.objects.update(id=order_id).update(
-                performer_id=req.get('performer_id'),
+            Order.objects.filter(id=order_id).update(
+                performer_id=Employee.objects.get(id=req.get('performer_id')),
                 base_award=req.get('base_award'),
                 status=req.get('status'),
                 comment=req.get('comment'),
                 cost=req.get('cost'),
-                arriving_address_id=req.get('arriving_address_id'),
-                destination_address_id=req.get('destination_address_id'),
-                arriving_client_id=req.get('arriving_client_id'),
-                destination_client_id=req.get('destination_client_id')
+                arriving_address_id=Address.objects.get(id=req.get('arriving_address_id')),
+                destination_address_id=Address.objects.get(id=req.get('destination_address_id')),
+                arriving_client_id=Client.objects.get(id=req.get('arriving_client_id')),
+                destination_client_id=Client.objects.get(id=req.get('destination_client_id'))
             )
+            return JsonResponse({'success': True, 'order_id': order_id}, status=200)
         elif request.method == 'DELETE':
             order.delete()
-            return JsonResponse({'success': True, 'order_id': order.id}, status=200)
+            return JsonResponse({'success': True, 'order_id': order_id}, status=200)
         else:
             return JsonResponse({'success': False, 'error': f"Method {request.method} is not allowed"},
                                 content_type="application/json", status=405)

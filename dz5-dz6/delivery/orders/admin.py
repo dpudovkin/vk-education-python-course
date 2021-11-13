@@ -8,7 +8,8 @@ from orders.models import Order, Address
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ("id", "cost", "comment", "status", "view_performer", "base_award")
-    list_filter = ("status",)
+    list_filter = ("status","performer_id")
+    list_select_related = ("destination_client_id", "arriving_client_id")
 
     def view_performer(self, obj):
         employee = obj.performer_id

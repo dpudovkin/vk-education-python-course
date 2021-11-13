@@ -1,6 +1,5 @@
 from django.db import models
 
-
 from clients.models import Client
 from employees.models import Employee
 
@@ -12,6 +11,7 @@ class Address(models.Model):
 
     def __str__(self):
         return self.full_name
+
 
 class Order(models.Model):
     destination_client_id = models.ForeignKey(to=Client, null=False, on_delete=models.PROTECT,
