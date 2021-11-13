@@ -19,16 +19,17 @@ from rest_framework.routers import DefaultRouter
 
 from application.views import index
 from clients.views import ClientViewSet
+from employees.views import EmployeeViewSet
+from orders.views import OrderViewSet, AddressViewSet
 
 router = DefaultRouter()
 router.register(r'api/clients', ClientViewSet, basename='clients')
+router.register(r'api/employees', EmployeeViewSet, basename='employees')
+router.register(r'api/orders', OrderViewSet, basename='orders')
+router.register(r'api/addresses', AddressViewSet, basename='addresses')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('users/', include('users.urls')),
-    # path('orders/', include('orders.urls')),
-    # path('employees/', include('employees.urls')),
-    # path('clients/', include('clients.urls')),
     path('', index, name='index')
 ]
 

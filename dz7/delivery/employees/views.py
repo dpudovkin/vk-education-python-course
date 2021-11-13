@@ -6,7 +6,7 @@ from employees.models import Employee
 from employees.serializers import EmployeeSerializer
 
 
-class ClientViewSet(viewsets.ViewSet):
+class EmployeeViewSet(viewsets.ViewSet):
 
     def list(self, request):
         queryset = Employee.objects.all()
@@ -15,16 +15,16 @@ class ClientViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         queryset = Employee.objects.all()
-        client = get_object_or_404(queryset, pk=pk)
-        serializer = EmployeeSerializer(client)
+        employee = get_object_or_404(queryset, pk=pk)
+        serializer = EmployeeSerializer(employee)
         return Response(serializer.data)
 
     def create(self, request):
         serializer = EmployeeSerializer(data=request.data)
         if serializer.is_valid():
-            client = Employee(request.data)
-            client.save()
-            serializer = EmployeeSerializer(client)
+            employee = Employee(request.data)
+            employee.save()
+            serializer = EmployeeSerializer(employee)
             return Response({"status": "success", "data": serializer.data, "message": None})
         else:
             return Response(serializer.errors,
@@ -32,10 +32,10 @@ class ClientViewSet(viewsets.ViewSet):
 
     def update(self, request, pk=None):
         # TODO handle error
-        client = get_object_or_404(Employee.objects.all(), pk=pk)
+        employee = get_object_or_404(Employee.objects.all(), pk=pk)
         # serializer = EmployeeSerializer(data=self.request.data)
         Employee.objects.filter(pk=pk).update(**self.request.data)
-        serializer = EmployeeSerializer(client)
+        serializer = EmployeeSerializer(employee)
         return Response({"status": "success", "data": serializer.data, "message": None})
 
     def partial_update(self, request, pk=None):
@@ -46,10 +46,10 @@ class ClientViewSet(viewsets.ViewSet):
         return Response({"status": "success", "data": serializer.data, "message": None})
 
     def destroy(self, request, pk=None):
-        client = get_object_or_404(Employee.objects.all(), pk=pk)
+        employee = get_object_or_404(Employee.objects.all(), pk=pk)
         # TODO handle error
         try:
-            client.delete()
+            employee.delete()
             return Response({"status": "success", "data": None, "message": None})
         except BaseException:
             return Response({"status": "error", "data": str(BaseException), "message": None})
