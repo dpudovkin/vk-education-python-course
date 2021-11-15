@@ -5,18 +5,19 @@ from django.utils.http import urlencode
 
 from orders.models import Order, Address
 
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ("id", "cost", "comment", "status", "view_performer", "base_award")
-    list_filter = ("status","performer_id")
-    list_select_related = ("destination_client_id", "arriving_client_id")
+    list_filter = ("status", "performer_id")
+    list_select_related = ("destination_client", "arriving_client")
 
     def view_performer(self, obj):
         employee = obj.performer_id
         url = (
-            reverse("admin:employees_employee_changelist")
-            + "?"
-            + urlencode({"employees__id": f"{obj.id}"})
+                reverse("admin:employees_employee_changelist")
+                + "?"
+                + urlencode({"employees__id": f"{obj.id}"})
         )
         return format_html('<a href="{}">{}</a>', url, employee)
 
@@ -24,4 +25,3 @@ class OrderAdmin(admin.ModelAdmin):
 @admin.register(Address)
 class AddressAdmin(admin.ModelAdmin):
     list_display = ("full_name", "longitude", "latitude")
-

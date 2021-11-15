@@ -3,7 +3,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
 from clients.models import Client
-from clients.serializers import ClientSerializer
+from clients.serializers import ClientSerializer, ClientUpdateSerializer
 
 
 class ClientViewSet(viewsets.ViewSet):
@@ -31,24 +31,24 @@ class ClientViewSet(viewsets.ViewSet):
                             status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
-        # TODO handle error
         client = get_object_or_404(Client.objects.all(), pk=pk)
-        Client.objects.filter(pk=pk).update(**self.request.data)
-        serializer = ClientSerializer(client)
-        return Response({"status": "success", "data": serializer.data, "message": None})
+        updateSerializer = ClientUpdateSerializer(data=request.data)
+        if updateSerializer.is_valid():
+            Client.objects.filter(pk=pk).update(**self.request.data)
+            return Response({"status": "success", "data": updateSerializer.data, "message": None})
+        return Response({"status": "error", "errors": updateSerializer.errors, "message": None},
+                        status=status.HTTP_400_BAD_REQUEST)
 
     def partial_update(self, request, pk=None):
-        # TODO handle error
         client = get_object_or_404(Client.objects.all(), pk=pk)
-        Client.objects.filter(pk=pk).update(**self.request.data)
-        serializer = ClientSerializer(client)
-        return Response({"status": "success", "data": serializer.data, "message": None})
+        updateSerializer = ClientUpdateSerializer(data=request.data)
+        if updateSerializer.is_valid():
+            Client.objects.filter(pk=pk).update(**self.request.data)
+            return Response({"status": "success", "data": updateSerializer.data, "message": None})
+        return Response({"status": "error", "errors": updateSerializer.errors, "message": None},
+                        status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         client = get_object_or_404(Client.objects.all(), pk=pk)
-        # TODO handle error
-        try:
-            client.delete()
-            return Response({"status": "success", "data": None, "message": None})
-        except BaseException:
-            return Response({"status": "error", "data": str(BaseException), "message": None})
+        client.delete()
+        return Response({"status": "success", "data": None, "message": None})

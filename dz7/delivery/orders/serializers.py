@@ -1,7 +1,5 @@
 from rest_framework import serializers
 
-from clients.models import Client
-from employees.models import Employee
 from orders.models import Order, Address
 
 
