@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-+0@1(4-u-pram2raqkq7b5n7i7_5yk5(9y!nnq3)+#kicaiw4=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -37,11 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "sslserver",
     'users',
     'clients',
     'employees',
     'orders',
     'rest_framework',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -49,9 +51,11 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'application.urls'
@@ -137,3 +141,22 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.linkedin.LinkedinOAuth2',
+    'social_core.backends.instagram.InstagramOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_URL = 'logout'
+LOGOUT_REDIRECT_URL = 'login'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1055586478317856'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'fe2d41d903451ae46f04253a71fc81d0'
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/'
+
+
