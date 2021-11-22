@@ -32,6 +32,11 @@ img {
 }
 
 .btn a, .btn a:hover {
-    color: white;
     text-decoration: none ;
+    color: white;
+}
+
+
+.blue-btn-text{
+    color: blue;
 }
