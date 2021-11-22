@@ -27,8 +27,6 @@ class ClientViewSet(viewsets.ViewSet):
         serializer = ClientSerializer(data=request.data)
         if serializer.is_valid():
             client = serializer.create(validated_data=request.data)
-            # client = Client(**request.data)
-            # client.save()
             serializer = ClientSerializer(client)
             return Response({"status": "success", "data": serializer.data, "message": None})
         else:

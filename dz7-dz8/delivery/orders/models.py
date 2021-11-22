@@ -17,10 +17,11 @@ class OrderManager(models.Manager):
 
     def connected_with_user(self, user_id, order_id=None):
         clients = Client.objects.filter(user_id=user_id)
-        employees = Client.objects.filter(user_id=user_id)
+        employees = Employee.objects.filter(user_id=user_id)
         result = self.none()
         for client in clients:
-            result = result | self.filter(arriving_client_id=client.id, destination_client_id=user_id).all()
+            result = result | self.filter(arriving_client_id=client.id).all()
+            result = result | self.filter(destination_client_id=client.id).all()
 
         for employee in employees:
             result = result | self.filter(performer_id=employee.id).all()

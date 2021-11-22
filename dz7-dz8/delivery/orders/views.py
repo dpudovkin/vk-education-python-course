@@ -92,8 +92,7 @@ class OrderViewSet(viewsets.ViewSet):
     def create(self, request):
         serializer = OrderSerializer(data=request.data)
         if serializer.is_valid():
-            order = Order(**request.data)
-            order.save()
+            order = serializer.create(validated_data=request.data)
             serializer = OrderSerializer(order)
             return Response({"status": "success", "data": serializer.data, "message": None})
         else:

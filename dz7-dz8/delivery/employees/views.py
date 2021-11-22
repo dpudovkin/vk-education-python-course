@@ -27,8 +27,7 @@ class EmployeeViewSet(viewsets.ViewSet):
     def create(self, request):
         serializer = EmployeeSerializer(data=request.data)
         if serializer.is_valid():
-            employee = Employee(**request.data)
-            employee.save()
+            employee = serializer.create(validated_data=request.data)
             serializer = EmployeeSerializer(employee)
             return Response({"status": "success", "data": serializer.data, "message": None})
         else:

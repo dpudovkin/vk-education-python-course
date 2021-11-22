@@ -7,8 +7,12 @@ from clients.models import Client
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        # fields = ['id', 'status', 'home_address', 'user']
-        fields = '__all__'
+        fields = ['id', 'status', 'home_address', 'user']
+
+    def create(self, validated_data):
+        data = {'status': validated_data['status'], 'home_address_id': validated_data['home_address'],
+                'user_id': validated_data['user']}
+        return Client.objects.create(**data)
 
 
 class ClientUpdateSerializer(serializers.Serializer):

@@ -9,6 +9,10 @@ class EmployeeSerializer(serializers.ModelSerializer):
         model = Employee
         fields = ['id', 'job', 'status', 'user']
 
+    def create(self, validated_data):
+        data = {'job': validated_data['job'], 'status': validated_data['status'], 'user_id': validated_data['user']}
+        return Employee.objects.create(**data)
+
 
 class EmployeeUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField()
