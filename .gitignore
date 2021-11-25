@@ -45,3 +45,4 @@ test-journal
 .mypy_cache/
 .component-names.json
 .local-names.json
+dz9/task2/result/
