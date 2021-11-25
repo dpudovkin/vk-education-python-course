@@ -10,12 +10,15 @@ PORT = 10000
 
 def init_worker(url_list, lock):
     def worker_loop():
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_address = ('localhost', PORT)
-        sock.connect(server_address)
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            server_address = ('localhost', PORT)
+            sock.connect(server_address)
+        except Exception as Argument:
+            print({"error": str(Argument)})
+            return
 
         while True:
-
             with lock:
                 if len(url_list) == 0:
                     sock.close()
@@ -24,8 +27,7 @@ def init_worker(url_list, lock):
 
             sock.sendall(url.encode('utf8'))
             data = sock.recv(1000)
-            print({'data': json.loads(data.decode()), 'url': url})
-            # print('Socket closing unexpectedly', file=sys.stderr)
+            print(f"{url}: {json.loads(data.decode())}")
 
     return threading.Thread(target=worker_loop)
 
@@ -52,12 +54,11 @@ def run():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Client for URL server")
-    parser.add_argument("-c", "--concurrency", dest="thread_count", required=True, type=int)
-    parser.add_argument("-f", "--file", dest="file_name", required=True)
-
+    parser.add_argument("file")
+    parser.add_argument("-c", "--concurrency", dest="thread_count", default=10, type=int)
+    parser.add_argument("-p", "--port", dest="port", default=10000, type=int)
     args = parser.parse_args()
-
-    FILE_NAME = args.file_name
+    FILE_NAME = args.file
     THREAD_COUNT = args.thread_count
-
+    PORT=args.port
     run()

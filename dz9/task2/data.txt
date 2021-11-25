@@ -8,3 +8,6 @@ https://github.com/mailcourses/python_backend_autumn_2021/tree/main/lesson-9
 https://education.vk.company/feed/
 https://stackoverflow.com/questions/33003498/typeerror-a-bytes-like-object-is-required-not-str
 https://pythonz.net/references/named/str.encode/
+ff
+f
+https://pythonz.net/references/named/str.encode/

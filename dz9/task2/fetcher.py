@@ -1,4 +1,7 @@
+import argparse
 import asyncio
+import os
+
 import aiohttp
 
 SOURCE_FILE_NAME = 'data.txt'
@@ -10,19 +13,23 @@ async def worker(url_tasks, resp_tasks):
     while True:
         if url_tasks.empty():
             break
-        url = await url_tasks.get()
+        url = url_tasks.get_nowait()
         async with aiohttp.ClientSession() as session:
-            async with session.get(url, ssl=False) as resp:
-                resp_text = await resp.text()  # TODO delete
-                await resp_tasks.put(resp_text)
+            try:
+                async with session.get(url, ssl=False) as resp:
+                    await resp_tasks.put(await resp.text())
+            except Exception as Argument:
+                msg = {"error": str(Argument)}
+                print(msg)
+                await resp_tasks.put(msg)
 
 
-async def saver(resp_tasks, iter):
-    for i in range(iter):
+async def saver(resp_tasks, num):
+    for i in range(num):
         resp = await resp_tasks.get()
-        with open(f"{SAVE_PATH}/response_{i}.html", "w") as file:  # TODO os join path
+        with open(os.path.join(SAVE_PATH, f"response_{i}.html"), "w") as file:
             file.write(resp)
-        print(len(resp))
+        #print(len(resp))
 
 
 def load_urls():
@@ -43,4 +50,14 @@ async def entry():
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="URL Fetcher")
+    parser.add_argument("thread_count", type=int)
+    parser.add_argument("file")
+    parser.add_argument("-d", "--destination", dest="destination", default='./result')
+    args = parser.parse_args()
+
+    WORKER_COUNT = args.thread_count
+    SOURCE_FILE_NAME = args.file
+    SAVE_PATH = args.destination
+
     asyncio.run(entry())
