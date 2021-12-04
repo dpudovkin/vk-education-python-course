@@ -1,5 +1,6 @@
 import argparse
 import asyncio
+import json
 import os
 
 import aiohttp
@@ -21,7 +22,7 @@ async def worker(url_tasks, resp_tasks):
             except Exception as Argument:
                 msg = {"error": str(Argument)}
                 print(msg)
-                await resp_tasks.put(msg)
+                await resp_tasks.put(json.dumps(msg))
 
 
 async def saver(resp_tasks, num):
@@ -29,7 +30,6 @@ async def saver(resp_tasks, num):
         resp = await resp_tasks.get()
         with open(os.path.join(SAVE_PATH, f"response_{i}.html"), "w") as file:
             file.write(resp)
-        #print(len(resp))
 
 
 def load_urls():

@@ -11,3 +11,5 @@ https://pythonz.net/references/named/str.encode/
 ff
 f
 https://pythonz.net/references/named/str.encode/
+https://ru.wikipedia.org/wiki/Document_Object_Model
+https://gb.ru/blackfriday_final
