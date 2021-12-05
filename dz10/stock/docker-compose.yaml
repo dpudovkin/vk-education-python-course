@@ -23,8 +23,24 @@ services:
     ports:
       - "6382:6379"
 
+  centrifugal:
+    container_name: centrifugo
+    image: centrifugo/centrifugo
+    command: centrifugo -c config.json --port=8086
+    ports:
+    - "8086:8086"
+    volumes:
+    - "./centrifugo:/centrifugo"
+    ulimits:
+      nproc: 65536
+      nofile:
+        soft: 65536
+        hard: 65536
+
 networks:
   postgres:
+    driver: bridge
+  crv_network:
     driver: bridge
 
 volumes:

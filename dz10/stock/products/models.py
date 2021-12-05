@@ -1,6 +1,6 @@
 from django.db import models
 
-from tracker.tasks import send_model_created_report
+from tracker.tasks import send_model_created_report, backup_product_list
 
 
 class EventModel(models.Model):

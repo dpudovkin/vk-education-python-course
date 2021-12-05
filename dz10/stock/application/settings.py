@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'celery',
     'products',
     'tracker',
+    'instant'
 ]
 
 MIDDLEWARE = [
@@ -141,6 +143,14 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_BROKER_URL = local_settings.celery_broker_url
 CELERY_RESULT_BACKEND = local_settings.celery_result_backend
 
+CELERY_BEAT_SCHEDULE = {
+    'tracker_backup': {
+        'task': 'tracker.tasks.backup_product_list',
+        'args': ('backup',),
+        'schedule': 30.0
+    },
+}
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -154,3 +164,10 @@ EMAIL_HOST_USER = local_settings.email_host_user
 EMAIL_HOST_PASSWORD = local_settings.email_host_password
 
 EMAIL_RECEIVER = local_settings.email_receiver
+
+
+CENTRIFUGO_HOST = "http://localhost"
+CENTRIFUGO_PORT = 8086
+CENTRIFUGO_HMAC_KEY = "46b38493-147e-4e3f-86e0-dc5ec54f5133"
+CENTRIFUGO_API_KEY = "aaaf202f-b5f8-4b34-bf88-f6c03a1ecda6"
+SITE_NAME = "stock-api"

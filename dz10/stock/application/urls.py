@@ -27,4 +27,5 @@ router.register(r'categories', views.CategoryViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
+    path("instant/", include("instant.urls")),
 ]

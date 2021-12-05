@@ -1,3 +1,5 @@
+dz10/stock/celerybeat-schedule.db
+dz10/stock/backup
 /**/.idea
 /**/.pytest_cache
 /**/__pycache__
