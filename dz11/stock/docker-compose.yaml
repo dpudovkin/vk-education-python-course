@@ -23,25 +23,44 @@ services:
     ports:
       - "6382:6379"
 
-  centrifugal:
-    container_name: centrifugo
-    image: centrifugo/centrifugo
-    command: centrifugo -c config.json --port=8086
-    ports:
-    - "8086:8086"
-    volumes:
-    - "./centrifugo:/centrifugo"
-    ulimits:
-      nproc: 65536
-      nofile:
-        soft: 65536
-        hard: 65536
+#  elasticsearch:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
+#    environment:
+#      - http.host=0.0.0.0
+#      - transport.host=127.0.0.1
+#      - bootstrap.memory_lock=true
+#      - "ES_JAVA_OPTS=-Xmx1024m -Xms1024m"
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: 0.50
+#          memory: 2048M
+#        reservations:
+#          cpus: 0.25
+#          memory: 2040M
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#    ports:
+#      - "9201:9200"
+#      - "9301:9300"
+#    networks:
+#      - docker_elk
+#  kibana:
+#    image: kibana:7.14.2
+#    ports:
+#      - "5602:5601"
+#    links:
+#      - elasticsearch
+#    networks:
+#      - docker_elk
 
 networks:
   postgres:
     driver: bridge
-  crv_network:
-    driver: bridge
+#  docker_elk:
+#    driver: bridge
 
 volumes:
     postgres:
