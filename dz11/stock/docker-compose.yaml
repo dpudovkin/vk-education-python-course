@@ -1,6 +1,31 @@
 version: '3.9'
 
 services:
+  web:
+    build: .
+    command:  gunicorn application.wsgi --bind 0.0.0.0:8000
+    volumes:
+      - ./:/usr/src/app/stock/
+      - static_volume:/home/app/web/staticfiles
+    expose:
+      - 8000
+    networks:
+      - postgres
+      - django
+    depends_on:
+      - postgres
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 1221:80
+    networks:
+      - django
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+    depends_on:
+      - web
+
   postgres:
     container_name: postgres_stock
     image: postgres
@@ -11,7 +36,7 @@ services:
     volumes:
        - postgres:/data/postgres
     ports:
-      - "5435:5432"
+      - "5436:5432"
     networks:
       - postgres
     restart: unless-stopped
@@ -21,47 +46,14 @@ services:
     image: "redis:alpine"
     command: redis-server
     ports:
-      - "6382:6379"
-
-#  elasticsearch:
-#    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
-#    environment:
-#      - http.host=0.0.0.0
-#      - transport.host=127.0.0.1
-#      - bootstrap.memory_lock=true
-#      - "ES_JAVA_OPTS=-Xmx1024m -Xms1024m"
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: 0.50
-#          memory: 2048M
-#        reservations:
-#          cpus: 0.25
-#          memory: 2040M
-#    ulimits:
-#      memlock:
-#        soft: -1
-#        hard: -1
-#    ports:
-#      - "9201:9200"
-#      - "9301:9300"
-#    networks:
-#      - docker_elk
-#  kibana:
-#    image: kibana:7.14.2
-#    ports:
-#      - "5602:5601"
-#    links:
-#      - elasticsearch
-#    networks:
-#      - docker_elk
+      - "6383:6379"
 
 networks:
   postgres:
     driver: bridge
-#  docker_elk:
-#    driver: bridge
+  django:
+    driver: bridge
 
 volumes:
     postgres:
-    pgadmin:
+    static_volume:

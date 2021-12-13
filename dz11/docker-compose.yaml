@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+
+  postgres:
+    container_name: postgres_stock_env
+    image: postgres
+    environment:
+      POSTGRES_USER: dpudovkin
+      POSTGRES_PASSWORD: password
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5435:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  redis-server:
+    container_name: celery_redis_stock_env
+    image: "redis:alpine"
+    command: redis-server
+    ports:
+      - "6382:6379"
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+    postgres:

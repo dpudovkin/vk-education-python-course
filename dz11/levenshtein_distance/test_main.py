@@ -15,8 +15,8 @@ class TestLevenshteinDistance(unittest.TestCase):
 
     def test_same_length_words(self):
         """ for same length words """
-        res = levenshtein_distance("mew", "new")
-        self.assertEqual(res, 1)
+        res = levenshtein_distance("zmew", "new")
+        self.assertEqual(res, 2)
 
     def test_different_words(self):
         """" for different words """
@@ -32,6 +32,11 @@ class TestLevenshteinDistance(unittest.TestCase):
         """ for one empty word """
         word = "technopark"
         self.assertEqual(len(word), levenshtein_distance("", word))
+
+    # def test_a_word(self):
+    #     """ for one empty word """
+    #     word = "technopark"
+    #     self.assertEqual(len(word), levenshtein_distance("", word))
 
 
 if __name__ == '__main__':
